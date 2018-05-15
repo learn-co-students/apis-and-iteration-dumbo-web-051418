@@ -22,39 +22,36 @@ def get_character_movies_from_api(character)
     return nil
   end
 
-  films = []
-  character_data["films"].each do |film|
+  character_data["films"].collect do |film|
       data = RestClient.get(film)
       current_film = JSON.parse(data)
-      films << current_film
-    end
-  films
+  end
 end
 
 
 def get_character(character, character_hash)
-  character_hash["results"].each do |character_data|
-    if character_data["name"].downcase == character
-      return character_data
-    end
+  character_data = character_hash["results"].find { |character_data| character_data["name"].downcase == character }
+
+  if character_data == nil
+    puts "No character data"
+    return nil
+  else
+    return character_data
   end
-  puts "No character data"
-  return nil
 end
 
 
 def parse_character_movies(films_hash)
   # some iteration magic and puts out the movies in a nice list
-  titles = Array.new
-  films_hash.each do |film|
-    titles.push(film["title"])
+
+  films_hash.collect do |film|
+    film["title"]
   end
-  titles
+
 end
 
 def show_character_movies(character)
   films_hash = get_character_movies_from_api(character)
-
   if films_hash == nil
     return nil
   end

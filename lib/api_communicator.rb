@@ -6,17 +6,20 @@ def get_character_movies_from_api(character)
   #make the web request
   all_characters = RestClient.get('http://www.swapi.co/api/people/')
   character_hash = JSON.parse(all_characters)
-  binding.pry
+
   films = []
   characters = character_hash["results"]
   characters.each do |character_data|
-    if character_data["name"] == character
+    if character_data["name"].downcase == character
+
       character_data["films"].each do |film|
         data = RestClient.get(film)
-        film << JSON.parse(data)
+        current_film = JSON.parse(data)
+        films << current_film
       end
     end
   end
+
   films
 end
 
@@ -45,7 +48,6 @@ def show_character_movies(character)
   parse_character_movies(films_hash)
 end
 
-get_character_movies_from_api("Luke Skywalker")
 
 ## BONUS
 

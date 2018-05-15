@@ -33,7 +33,11 @@ end
 
 def parse_character_movies(films_hash)
   # some iteration magic and puts out the movies in a nice list
-
+  titles = Array.new
+  films_hash.each do |film|
+    titles.push(film["title"])
+  end
+  titles
 end
 
 def show_character_movies(character)
